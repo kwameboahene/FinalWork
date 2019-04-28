@@ -713,14 +713,14 @@ function CartT() {
 
     <div class="card" id="classcard">
 
-    
+    <img src="img.png" id="imagg" style="width:100%">
     <h2 id="searchname"></h2>
     <p id="searchbrand"></p>
     <p class="price" id="searchprice"></p>
     <p id="searchmodel"></p>
     <p id="searchyear"></p>
 
-
+    <p><button id="bbgg" style="background-color:#000;color:#fff;" disabled="true" onclick="addtoC()">Add to Cart</button></p>
   </div> 
 
 
@@ -729,6 +729,11 @@ function CartT() {
 
       function search() {
 
+              $("#searchname").html("");
+              $("#searchprice").html("");
+              $("#searchmodel").html("");
+              $("#searchyear").html("");              
+              $("#searchbrand").html("");
         $.post(
         'http://cs.ashesi.edu.gh/~kwame.boahene/search.php',
         {
@@ -739,17 +744,25 @@ function CartT() {
             "json"     
     ).done(function( data ) {
       var data = JSON.parse(data);
-              console.log(data);
+              if (data.length != "") {
               self.location.href = "#search-page";
-              $("#classcard").prepend('<img src="img.png" style="width:100%">');
+
+              
               $('#searchname').html(data[0]);
               $('#searchbrand').html(data[1]);
               $('#searchmodel').html(data[2]);
               $('#searchyear').html(data[3]);
               data[4] = "GHC "+ data[4];
               $('#searchprice').html(data[4]);
+              $('#bbgg').attr("disabled", false);
 
-              $("#classcard").append( '<p><button style="background-color:#000;color:#fff;" onclick="addtoC()">Add to Cart</button></p>');
+            }
+
+            else {
+              alert("product not in Catalog");
+              self.location.href = "#search-page";
+              $('#bbgg').attr("disabled", true);
+            }
             } );
 
 
